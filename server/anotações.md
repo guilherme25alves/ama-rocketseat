@@ -24,3 +24,13 @@ Para criar uma nova migration:
 
     `tern new --migrations ./internal/store/pgstore/migrations create_rooms_table` --> passando o caminho onde queremos salvar e o nome da migration
 
+### Lib para gerar códigos SQL em GO 
+
+- sqlc (não é um ORM -> em GO não é recomendado ORM)
+
+    go install github.com/sqlc-dev/sqlc/cmd/sqlc@latest
+
+Necessário criar um arquivo de config, geralmente `sqlc.yml`, na pasta de migrations
+Após configuração feita, rodar com o comando 
+
+    sqlc generate -f ./internal/store/pgstore/sqlc.yml
