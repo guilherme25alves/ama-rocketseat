@@ -268,7 +268,33 @@ func (h apiHandler) handleReactToMessage(w http.ResponseWriter, r *http.Request)
 
 }
 
-func (h apiHandler) handleMarkMessageAsAnswered(w http.ResponseWriter, r *http.Request) {}
+func (h apiHandler) handleMarkMessageAsAnswered(w http.ResponseWriter, r *http.Request) {
+	_, _, shouldReturn := handleValidateRoomID(r, w, h)
+	if shouldReturn {
+		return
+	}
+
+	_, messageID, shouldReturn := handleValidateMessageID(r, w, h)
+	if shouldReturn {
+		return
+	}
+
+	err := h.q.MarkMessageAsAnswered(r.Context(), messageID)
+	if err != nil {
+		slog.Warn("failed to mark message as answered", "error", err)
+		http.Error(w, "something went wrong", http.StatusInternalServerError)
+		return
+	}
+
+	type response struct {
+		Data string `json:"data"`
+	}
+
+	data, _ := json.Marshal(response{Data: "success: current is marked as answered"})
+	w.Header().Set("Content-Type", "application/json")
+	_, _ = w.Write(data)
+
+}
 
 func (h apiHandler) handleRemoveReactFromMessage(w http.ResponseWriter, r *http.Request) {
 	_, _, shouldReturn := handleValidateRoomID(r, w, h)
