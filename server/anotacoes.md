@@ -58,3 +58,7 @@ Pacote do GO que está sendo utilizado para criar um Websocket --> gorrila/webso
 Para fazer o download, executar o comando: 
 
     `go get github.com/gorilla/websocket`
+
+## INICIANDO APLICAÇÃO
+
+     go run cmd/websocket/main.go
