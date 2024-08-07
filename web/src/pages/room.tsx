@@ -1,9 +1,23 @@
 import { useParams} from 'react-router-dom'
 import { ArrowRight, ArrowUp, Share2 } from 'lucide-react'
 import amaLogo from '../assets/ama-logo.svg'
+import {toast} from 'sonner'
+import { Message } from '../components/message'
 
 export function Room() {
     const { roomId } = useParams()
+
+    function handleShareRoom() {
+        const url = window.location.href.toString()
+
+        if (navigator.share !== 'undefined' && navigator.canShare()) {
+            navigator.share({ url })
+        } else {
+            navigator.clipboard.writeText(url)
+
+            toast.info('The room URL was copied to your clipboard!')
+        }
+    }
 
  
     return (
@@ -18,7 +32,8 @@ export function Room() {
 
                 <button 
                     type="submit" 
-                    className="bg-zinc-800 text-zinc-300 px-3 py-1.5 gap-1.5 flex items-center rounded-lg font-medium text-sm transition-colors hover:bg-zinc-700"
+                    onClick={handleShareRoom}
+                    className="ml-auto bg-zinc-800 text-zinc-300 px-3 py-1.5 gap-1.5 flex items-center rounded-lg font-medium text-sm transition-colors hover:bg-zinc-700"
                 >
                     Compartilhar
                     <Share2 className="size-4" />
@@ -51,24 +66,8 @@ export function Room() {
             </form>
 
             <ol className="list-decimal list-outside px-3 space-y-8">
-                <li className="ml-4 leading-relaxed text-zinc-100">
-                    O que é GoLang e quais são as suas principais vantagens em comparação com outras linguagens de programação
-                    como Python, Java ou C++?
-
-                    <button type="button" className="mt-3 flex items-center gap-2 text-orange-400 text-sm font-medium hover:text-orange-500">
-                        <ArrowUp className="size-4" />
-                        Curtir Pergunta(123)
-                    </button>
-                </li>
-                <li className="ml-4 leading-relaxed text-zinc-100">
-                    O que é GoLang e quais são as suas principais vantagens em comparação com outras linguagens de programação
-                    como Python, Java ou C++?
-                
-                    <button type="button" className="mt-3 flex items-center gap-2 text-zinc-400 text-sm font-medium hover:text-zinc-300">
-                        <ArrowUp className="size-4" />
-                        Curtir Pergunta(123)
-                    </button>                
-                </li>
+                <Message text="O que é go e quais são as suas vantagens em relação a Python, Java ou C++?" amoutOfReactions={10} answered />
+                <Message text="Como funcionam as GO routines do GO?" amoutOfReactions={1} />
             </ol>
 
         </div>
