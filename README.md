@@ -29,3 +29,7 @@ Aproveitando para desbravar alguns recursos da versão 19 do React (em versão R
 - Typescrit
 - Web sockets
 - Tailwind
+
+#### Observações 
+
+[Link Notion de apoio (avaliar disponibilidade)](https://efficient-sloth-d85.notion.site/Go-React-Na-Pr-tica-2fe483469a9b47eb93f23e97eef3939e)

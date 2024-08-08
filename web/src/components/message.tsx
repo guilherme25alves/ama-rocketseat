@@ -1,17 +1,56 @@
 import { useState } from 'react'
 import { ArrowUp } from 'lucide-react'
+import {useParams} from "react-router-dom";
+import { createMessageReaction } from '../http/create-message-reaction';
+import { toast } from 'sonner'
+import { removeMessageReaction } from '../http/remove-message-reaction';
 
 interface MessageProps {
+    id: string
     text: string
-    amoutOfReactions: number
+    amountOfReactions: number
     answered?: boolean // ? -> campo opcional
 }
 
-export function Message({text, amoutOfReactions, answered = false}: MessageProps) {
+export function Message({ 
+        id: messageId, 
+        text, 
+        amountOfReactions, 
+        answered = false
+}: MessageProps) {
+    const { roomId } = useParams()
     const [hasReacted, setHasReacted] = useState(false)
 
-    function handleReactToMessage() {
+    if (!roomId) {
+        throw new Error("Messages components must be used within room page")
+    }
+
+    async function createMessageReactionAction() {
+        if (!roomId) {
+            return
+        }
+
+        try {
+            await createMessageReaction({ messageId, roomId})
+        } catch {
+            toast.error('Falha ao curtir pergunta, tente novamente!')
+        }
+
         setHasReacted(true)
+    }
+    
+    async function removeMessageReactionAction() {
+        if (!roomId) {
+            return
+        }
+
+        try {
+            await removeMessageReaction({ messageId, roomId})
+        } catch {
+            toast.error('Falha ao remover curtida da pergunta, tente novamente!')
+        }
+
+        setHasReacted(false)
     }
 
     return (
@@ -22,22 +61,23 @@ export function Message({text, amoutOfReactions, answered = false}: MessageProps
             {text}
 
             { hasReacted ?  
-                (<button                     
+                (<button    
+                    onClick={removeMessageReactionAction}                 
                     type="button" 
                     className="mt-3 flex items-center gap-2 text-orange-400 text-sm font-medium hover:text-orange-500"
                  >
                     <ArrowUp className="size-4" />
-                    Curtir Pergunta({amoutOfReactions})
+                    Curtir Pergunta({amountOfReactions})
                 </button>)
             :
                             
                 (<button 
-                    onClick={handleReactToMessage}
+                    onClick={createMessageReactionAction}
                     type="button" 
                     className="mt-3 flex items-center gap-2 text-zinc-400 text-sm font-medium hover:text-zinc-300"
                  >
                     <ArrowUp className="size-4" />
-                    Curtir Pergunta({amoutOfReactions})
+                    Curtir Pergunta({amountOfReactions})
                 </button>)
             }
 
