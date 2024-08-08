@@ -128,11 +128,7 @@ func (h apiHandler) handleGetRoomMessages(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	type response struct {
-		Data []pgstore.Message `json:"data"`
-	}
-
-	data, _ := json.Marshal(response{Data: messages})
+	data, _ := json.Marshal(messages)
 	w.Header().Set("Content-Type", "application/json")
 	_, _ = w.Write(data)
 }
