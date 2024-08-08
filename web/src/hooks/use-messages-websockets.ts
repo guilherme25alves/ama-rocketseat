@@ -6,6 +6,15 @@ interface UseMessagesWebSocketsParams {
     roomId: string
 }
 
+// Definimos um tipo quando um objeto pode ter diferentes propriedades dependendo de um parâmetro
+// é o caso do nosso switch, que dependendo do valor, pode mudar o tipo de objeto retornado
+// ISSO É CHAMADO DE DISCRIMINATION UNION e tem em algumas linguagens como JS e Ruskell
+type WebhookMessage = 
+ | { kind: 'message_created', value: { id:string, message: string } }
+ | { kind: 'message_answered', value: { id:string } }
+ | { kind: 'message_reaction_increased', value: { id:string, count: number} }
+ | { kind: 'message_reaction_decreased', value: { id:string, count: number} };
+
 export function useMessagesWebSockets({roomId}: UseMessagesWebSocketsParams) {
     const queryClient = useQueryClient()
 
@@ -22,10 +31,7 @@ export function useMessagesWebSockets({roomId}: UseMessagesWebSocketsParams) {
 
         ws.onmessage = (event) => {
             console.log(event)
-            const data: {
-                kind: 'message_created' | 'message_answered' | 'message_reaction_increased' | 'message_reaction_decreased',
-                value: any
-            } = JSON.parse(event.data)
+            const data: WebhookMessage = JSON.parse(event.data)
 
             switch (data.kind) {
                 case 'message_created':
