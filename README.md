@@ -14,12 +14,12 @@ Aproveitando para desbravar alguns recursos da versão 19 do React (em versão R
 
 ### Página de criação de uma nova sala 
 
-![pagina criar nova sala](https://github.com/guilherme25alves/ama-rocketseat/blob/web/public/demo-create-room-page.pnn)
+![pagina criar nova sala](https://github.com/guilherme25alves/ama-rocketseat/blob/web/public/demo-create-room-page.png)
 
 
 ### Página de uma sala com as respectivas perguntas
 
-![pagina de uma sala](https://github.com/guilherme25alves/ama-rocketseat/blob/web/public/demo-room-page.pnn)
+![pagina de uma sala](https://github.com/guilherme25alves/ama-rocketseat/blob/web/public/demo-room-page.png)
 
 
 ### Técnologias Utilizadas 
